@@ -1,11 +1,23 @@
-const express = require("express");
-const app = express();
-const port = 3000;
+import mongoose from "mongoose";
+import app from "./app";
+import { envConfig } from "./config/env.config";
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+const boostrap = async () => {
+  try {
+    // connect database
+    mongoose
+      .connect("mongodb://127.0.0.1:27017/book-catalog")
+      .then(() => console.log("Database connection successful!✔📝"))
+      .catch((e) => {
+        throw e;
+      });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+    app.listen(envConfig.port, () => {
+      console.log(`Book app listening on port: ${envConfig.port}`);
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+boostrap();
