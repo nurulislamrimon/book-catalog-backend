@@ -6,7 +6,7 @@ const boostrap = async () => {
   try {
     // connect database
     mongoose
-      .connect("mongodb://127.0.0.1:27017/book-catalog")
+      .connect(envConfig.db_local as string)
       .then(() => console.log("Database connection successful!✔📝"))
       .catch((e) => {
         throw e;
