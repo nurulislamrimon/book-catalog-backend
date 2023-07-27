@@ -9,14 +9,14 @@ const boostrap = async () => {
       .connect(envConfig.db_local as string)
       .then(() => console.log("Database connection successful!✔📝"))
       .catch((e) => {
-        throw e;
+        console.log(e);
       });
 
     app.listen(envConfig.port, () => {
       console.log(`Book app listening on port: ${envConfig.port}`);
     });
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 

@@ -1,12 +1,12 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 
 const catchAsync = (fn: RequestHandler) => {
-  try {
-    return async (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
       return await fn(req, res, next);
-    };
-  } catch (error) {
-    throw error;
-  }
+    } catch (error) {
+      next(error);
+    }
+  };
 };
 export default catchAsync;

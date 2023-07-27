@@ -1,5 +1,6 @@
 import { ErrorRequestHandler, RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
+import { handleValidationError } from "../errors_modifier/handle_validation_error";
 
 export const globalErrorHandler: ErrorRequestHandler = (
   error,
@@ -8,11 +9,18 @@ export const globalErrorHandler: ErrorRequestHandler = (
   next
 ) => {
   let statusCode = 400;
+  let message = error.message;
   let errorMessages = [{ path: "", message: "" }];
+  if (error.name === "ValidationError") {
+    const validationError = handleValidationError(error);
+    statusCode = validationError.statusCode;
+    errorMessages = validationError.errorMessages;
+    message = validationError.message;
+  }
 
   res.status(statusCode).send({
     success: false,
-    message: error.message,
+    message,
     errorMessages,
   });
 };
