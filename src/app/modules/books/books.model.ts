@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import IBooks from "./books.interface";
+import mongoose, { Types } from "mongoose";
+import IBooks, { IBookModel } from "./books.interface";
 
 const bookSchema = new mongoose.Schema<IBooks>({
   title: { type: String, required: true },
@@ -7,11 +7,15 @@ const bookSchema = new mongoose.Schema<IBooks>({
   genre: { type: String, required: true },
   publicationDate: { type: Date, required: true },
   reviews: {
-    reviewer: { type: String, required: true },
-    review: { type: Number, required: true },
+    reviewer: String,
+    review: Number,
   },
 });
+// static mathods
+bookSchema.static("getBook", async function (bookId: Types.ObjectId) {
+  return await Book.findOne({ _id: bookId });
+});
 
-const Book = mongoose.model<IBooks>("Book", bookSchema);
+const Book = mongoose.model<IBooks, IBookModel>("Book", bookSchema);
 
 export default Book;
