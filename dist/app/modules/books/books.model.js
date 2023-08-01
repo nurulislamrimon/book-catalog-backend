@@ -13,23 +13,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const app_1 = __importDefault(require("./app"));
-const env_config_1 = require("./config/env.config");
-const boostrap = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        // connect database
-        mongoose_1.default
-            .connect(env_config_1.envConfig.db_remote)
-            .then(() => console.log("Database connection successful!✔📝"))
-            .catch((e) => {
-            console.log(e);
-        });
-        app_1.default.listen(env_config_1.envConfig.port, () => {
-            console.log(`Book app listening on port: ${env_config_1.envConfig.port}`);
-        });
-    }
-    catch (error) {
-        console.log(error);
-    }
+const bookSchema = new mongoose_1.default.Schema({
+    title: { type: String, required: true },
+    author: { type: String, required: true },
+    genre: { type: String, required: true },
+    publicationDate: { type: Date, required: true },
+    reviews: {
+        reviewer: String,
+        review: Number,
+    },
 });
-boostrap();
+// static mathods
+bookSchema.static("getBook", function (bookId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield Book.findOne({ _id: bookId });
+    });
+});
+const Book = mongoose_1.default.model("Book", bookSchema);
+exports.default = Book;

@@ -3,7 +3,7 @@ import IBooks from "./books.interface";
 import Book from "./books.model";
 
 const getAllBooksService = async () => {
-  return await Book.find({}, "-reviews");
+  return await Book.find({}, "-reviews").sort({ createdAt: -1 });
 };
 
 const postABookService = async (payload: IBooks) => {

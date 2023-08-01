@@ -10,7 +10,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
   next
 ) => {
   let statusCode = 400;
-  let message;
+  let message = error.message;
   let errorMessages = [{ path: "", message: "" }];
   if (error.name === "ValidationError") {
     const validationError = handleValidationError(error);
@@ -22,7 +22,6 @@ export const globalErrorHandler: ErrorRequestHandler = (
     errorMessages[0].message = error.message;
   } else if (error instanceof ApiError) {
     statusCode = error.statusCode;
-    message = error.message;
   }
 
   res.status(statusCode).send({

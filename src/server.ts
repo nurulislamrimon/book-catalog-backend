@@ -6,7 +6,7 @@ const boostrap = async () => {
   try {
     // connect database
     mongoose
-      .connect(envConfig.db_local as string)
+      .connect(envConfig.db_remote as string)
       .then(() => console.log("Database connection successful!✔📝"))
       .catch((e) => {
         console.log(e);
